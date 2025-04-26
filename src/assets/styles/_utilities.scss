@@ -1,0 +1,37 @@
+@use "./_variables" as variables;
+@use "sass:color";
+
+.bg-gradient-custom {
+  background: linear-gradient(135deg, variables.$primary 0%, color.adjust(variables.$primary, $lightness: -20%) 100%);
+}
+
+.text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+// 滚动条隐藏
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+  scroll-behavior: smooth;
+  
+  &::-webkit-scrollbar,
+  &::-webkit-scrollbar-thumb,
+  &::-webkit-scrollbar-track,
+  &::-webkit-scrollbar-corner {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+    background: transparent !important;
+    opacity: 0 !important;
+  }
+  
+  /* 确保在所有浏览器中都能正常工作 */
+  &::-webkit-scrollbar-button {
+    display: none !important;
+  }
+  
+  /* 兼容 Firefox */
+  scrollbar-color: transparent transparent;
+}

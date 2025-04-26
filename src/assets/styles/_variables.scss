@@ -1,0 +1,26 @@
+// 颜色变量
+$primary: #165DFF;
+$secondary: #36D399;
+$warning: #FF6B35;
+$success: #22C55E;
+$danger: #EF4444;
+
+// 过渡变量
+$transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+// 中性色
+$neutral: (
+  100: #F9FAFB,
+  200: #F3F4F6,
+  300: #E5E7EB,
+  400: #D1D5DB,
+  500: #9CA3AF,
+  600: #6B7280,
+  700: #4B5563,
+  800: #1F2937,
+  900: #111827,
+);
+
+// 阴影
+$shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+$shadow-card-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
