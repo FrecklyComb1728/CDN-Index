@@ -23,7 +23,7 @@
         <div class="flex justify-between items-center mb-6">
           <div class="text-left">
             <p class="text-neutral-500 text-sm">您的IP地址</p>
-            <p class="text-lg font-semibold text-neutral-800">{{ visitorIP || '正在获取...' }}</p>
+            <p class="text-lg font-semibold text-neutral-800 whitespace-pre-line">{{ visitorIP || '正在获取...' }}</p>
           </div>
           <div class="text-right">
             <p class="text-neutral-500 text-sm">最后更新</p>
@@ -169,6 +169,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
+import { uptimeRobotApiKeys, API_ENDPOINTS } from '@/config/api'
 
 // 状态管理
 const loading = ref(true)
@@ -177,16 +178,6 @@ const monitors = ref([])
 const loadingMonitors = ref(true)
 const lastUpdated = ref('')
 
-// API 配置
-const uptimeRobotApiKeys = [
-  'm800414753-7bdd0023a2213ed1230a01b6',
-  'm800415016-17ff34d5d2c648037c9a3a58',
-  'm800414968-8e69417d7eebc39ebe05abf8'
-
-]
-const ipApiUrl = 'https://v.api.aa1.cn/api/myip/index.php?aa1=text'
-const monitorsApiUrl = 'https://api.uptimerobot.com/v2/getMonitors'
-
 // 获取所有监测数据
 const fetchMonitors = async () => {
   loadingMonitors.value = true
@@ -194,7 +185,7 @@ const fetchMonitors = async () => {
   try {
     // 并行请求所有API密钥的数据
     const promises = uptimeRobotApiKeys.map(apiKey => 
-      fetch(monitorsApiUrl, {
+      fetch(API_ENDPOINTS.monitors, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
@@ -261,18 +252,16 @@ onMounted(() => {
 // 获取访问者IP
 const fetchVisitorIP = async () => {
   try {
-    const response = await fetch(ipApiUrl)
+    const response = await fetch(API_ENDPOINTS.ip)
     const htmlResponse = await response.text()
     
-    const lines = htmlResponse.split('\n')
-    const lastLine = lines[lines.length - 1].trim()
+    // 解析返回的HTML内容
+    const ipInfo = htmlResponse.trim()
     
-    // 增强IP验证
-    const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}|(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}$/
-    if (ipRegex.test(lastLine)) {
-      visitorIP.value = lastLine
+    if (ipInfo.includes('当前 IP：')) {
+      visitorIP.value = ipInfo.replace('来自于：', '\n来自于：')
     } else {
-      console.warn('无效IP格式:', lastLine)
+      console.warn('无效IP格式:', ipInfo)
       visitorIP.value = '无法获取'
     }
   } catch (error) {

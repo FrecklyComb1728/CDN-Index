@@ -5,6 +5,6 @@ export const uptimeRobotApiKeys = [
 ]
 
 export const API_ENDPOINTS = {
-  ip: 'https://v.api.aa1.cn/api/myip/index.php?aa1=text',
+  ip: 'https://myip.ipip.net/',
   monitors: 'https://api.uptimerobot.com/v2/getMonitors'
 }
